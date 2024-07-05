@@ -35,19 +35,23 @@ export class HomeComponent implements OnInit {
     //       this.advancedCourses = courses.filter(course => course.category == "ADVANCED");
 
     //     });
- // we are not calling the backend directly with this diferent approach
+    this.reloadCourses();
+  }
+
+  reloadCourses () {
+    // we are not calling the backend directly with this diferent approach
     const courses$ = this.coursesService.loadAllCourses()
-      .pipe(
-        map(courses => courses.sort(sortCoursesBySeqNo))
-      );
+    .pipe(
+      map(courses => courses.sort(sortCoursesBySeqNo))
+    );
     this.beginnerCourses$ = courses$
-      .pipe(
-        map(courses => courses.filter(course => course.category == "BEGINNER"))
-      );
+    .pipe(
+      map(courses => courses.filter(course => course.category == "BEGINNER"))
+    );
     this.advancedCourses$ = courses$
-      .pipe(
-        map(courses => courses.filter(course => course.category == "ADVANCED"))
-      );
+    .pipe(
+      map(courses => courses.filter(course => course.category == "ADVANCED"))
+    );
   }
 
 }
