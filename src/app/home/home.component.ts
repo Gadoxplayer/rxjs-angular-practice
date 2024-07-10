@@ -7,6 +7,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {CourseDialogComponent} from '../course-dialog/course-dialog.component';
 import { CoursesService } from '../services/courses.services';
 import { LoadingService } from '../loading/loading.service';
+import { MessagesService } from '../messages/messages.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class HomeComponent implements OnInit {
 
   advancedCourses$: Observable<Course[]>;
 
-  constructor(private coursesService: CoursesService, private loadingService: LoadingService) {
+  constructor(private coursesService: CoursesService, private loadingService: LoadingService, private messagesService: MessagesService) {
 
   }
 
@@ -45,8 +46,13 @@ export class HomeComponent implements OnInit {
     // we are not calling the backend directly with this diferent approach
     const courses$ = this.coursesService.loadAllCourses()
     .pipe(
-      map(courses => courses.sort(sortCoursesBySeqNo))
+      map(courses => courses.sort(sortCoursesBySeqNo)),
       //finalize(() => this.loadingService.loadingOff())
+      catchError(error => {
+        const errorMessage = "Could not load courses";
+        this.messagesService.showErrors(errorMessage);
+        return throwError(error);
+      })
     );
 
     const loadCourses$ = this.loadingService.showLoaderUntilCompleted(courses$);
