@@ -14,6 +14,13 @@ export class CoursesService {
         
     }
 
+    loadCourseById(courseId: number) {
+        return this.http.get<Course>(`./api/courses/${courseId}`)
+            .pipe(
+                shareReplay()
+            );
+    }
+
     loadAllCourses(): Observable<Course[]> {
         return this.http.get<Course[]>("/api/courses")
             .pipe(
@@ -26,7 +33,7 @@ export class CoursesService {
         return this.http.put(`/api/courses/${courseId}`, changes)
                 .pipe(
                     shareReplay()
-                )
+                );
     }
 
     searchLessons(search: string): Observable<Lesson[]> {
