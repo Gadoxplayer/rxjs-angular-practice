@@ -36,6 +36,7 @@ export class CourseComponent implements OnInit {
   ngOnInit() {
     const courseId = parseInt(this.route.snapshot.paramMap.get("courseId"));
     this.course$ = this.courseService.loadCourseById(courseId);
+    this.lessons$ = this.courseService.loadAllLessons(courseId);
 
   }
 
